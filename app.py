@@ -6,6 +6,9 @@ import io
 st.title("🔍 Analisi IT: Servizi e Famiglie")
 st.write("Carica un file Excel e scegli il tipo di analisi da eseguire.")
 
+# Aggiungi il video da YouTube
+st.video("https://www.youtube.com/watch?v=_BTQw1e1x2g")
+
 # Caricamento del file
 uploaded_file = st.file_uploader("📂 Carica il file Excel", type=["xlsx"])
 
@@ -18,7 +21,14 @@ if uploaded_file:
     output = io.BytesIO()
     
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        # Aggiungi il logo al file Excel
+        workbook = writer.book
+        worksheet = workbook.add_worksheet('Logo')
+        logo_path = r'C:\Users\luca.spagnuolo.ext\Downloads\logoConsip.jpg'
         
+        # Aggiungi l'immagine nella cella A1
+        worksheet.insert_image('A1', logo_path)
+
         # Analisi Servizi IT
         if do_servizi_it:
             servizi_it = df['Servizio IT'].unique()
@@ -54,7 +64,7 @@ if uploaded_file:
                     for membro in df_div['Member Name'].unique():
                         gruppi_membro = set(df_div[df_div['Member Name'] == membro]['Group Name'])
                         gruppi_comuni &= gruppi_membro
-                    
+                        
                     gruppi_non_comuni = set(df_div['Group Name']) - gruppi_comuni
                     membri_possessori = {gruppo: list(df_div[df_div['Group Name'] == gruppo]['Member Name']) for gruppo in gruppi_non_comuni}
                     membri_mancanti = {gruppo: list(set(df_div['Member Name']) - set(membri_possessori.get(gruppo, []))) for gruppo in gruppi_non_comuni}
@@ -83,6 +93,6 @@ if uploaded_file:
     st.download_button(
         label="📥 Scarica il file Excel generato",
         data=output,
-        file_name="analisi_IT.xlsx",
+        file_name="analisi_IT_con_logo_e_video.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
