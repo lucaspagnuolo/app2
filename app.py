@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import io
-import openpyxl
+
 
 st.title("🔍 Analisi IT: Servizi e Famiglie")
 st.write("Carica un file Excel e scegli il tipo di analisi da eseguire.")
